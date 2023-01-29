@@ -9,7 +9,7 @@ from hubconf import custom
 import pyautogui
 import time
 import win32api, win32con, win32gui
-model = custom(path_or_model='best.pt')
+model = custom(path_or_model='!best.pt')
 size_scale = 3
 
 with mss.mss() as sct:
