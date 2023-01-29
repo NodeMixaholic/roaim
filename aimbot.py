@@ -24,10 +24,10 @@ with mss.mss() as sct:
         image = np.expand_dims(ori_img, 0)
         img_w, img_h = image.shape[2], image.shape[1]
         img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)             
-        results = model(image)
+        results = model(img)
         results.render()
         out = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-        labels, cord_thres = results.xyxyn[0][:, -1].numpy(), results.xyxyn[0][:, :-1].numpy()
+        labels, cord_thres = results.xyxyn[0][:, -1].cpu().numpy(), results.xyxyn[0][:, :-1].cpu().numpy()
         cv2.imshow('s', out)
         centers = [img_w / 2, img_h / 2]
         
