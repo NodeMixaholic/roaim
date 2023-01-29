@@ -48,7 +48,7 @@ with mss.mss() as sct:
                     newdata.append(data)
 
         elif len(results) == 1:
-                item, confidence_rate, imagedata = results
+                item, confidence_rate, imagedata = results[0]
                 x1, y1, w_size, h_size = imagedata
                 x_start = round(x1 - (w_size/2))
                 y_start = round(y1 - (h_size/2))
