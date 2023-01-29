@@ -23,7 +23,7 @@ with mss.mss() as sct:
         ori_img = np.array(pyautogui.screenshot(region=region))
         ori_img = cv2.resize(ori_img, (ori_img.shape[1] // size_scale, ori_img.shape[0] // size_scale))
         image = np.expand_dims(ori_img, 0)
-        img_w, img_h,w2,h2 = image.shape[2], image.shape[1], image.shape[4], image.shape[3]
+        img_w, img_h = image.shape[2], image.shape[1]
         img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)             
         results = model(img)
         results.render()
