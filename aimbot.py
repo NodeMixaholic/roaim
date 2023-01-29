@@ -29,7 +29,10 @@ with mss.mss() as sct:
         results.render()
         results = results.xyxyn
         out = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-        labels, cord_thres = results.xyxyn[0][:, -1].numpy(), results.xyxyn[0][:, :-1].numpy()
+        try:
+            labels, cord_thres = results.xyxyn[0][:, -1].numpy(), results.xyxyn[0][:, :-1].numpy()
+        except:
+            labels, cord_thres = results.xyxyn[0][:, -1].cpu().numpy(), results.xyxyn[0][:, :-1].cpu().numpy()
         cv2.imshow('s', out)
         
         newdata = []
