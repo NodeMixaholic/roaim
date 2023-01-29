@@ -27,6 +27,7 @@ with mss.mss() as sct:
         img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)             
         results = model(img)
         results.render()
+        results = results.xyxyn
         out = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
         try:
             labels, cord_thres = results.xyxyn[0][:, -1].numpy(), results.xyxyn[0][:, :-1].numpy()
