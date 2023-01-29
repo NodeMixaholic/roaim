@@ -36,7 +36,7 @@ with mss.mss() as sct:
         
         newdata = []
         if len(results) >=2:
-                for x in test:
+                for x in results:
                     item, confidence_rate, imagedata = x
                     x1, y1, w_size, h_size = imagedata
                     x_start = round(x1 - (w_size/2))
@@ -47,7 +47,7 @@ with mss.mss() as sct:
                     newdata.append(data)
 
         elif len(results) == 1:
-                item, confidence_rate, imagedata = test[0]
+                item, confidence_rate, imagedata = results[0]
                 x1, y1, w_size, h_size = imagedata
                 x_start = round(x1 - (w_size/2))
                 y_start = round(y1 - (h_size/2))
