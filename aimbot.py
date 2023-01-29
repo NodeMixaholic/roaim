@@ -29,41 +29,16 @@ with mss.mss() as sct:
         results.render()
         results = results.xyxyn
         out = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-        try:
-            labels, cord_thres = results[0][:, -1].numpy(), results[0][:, :-1].numpy()
-        except:
-            labels, cord_thres = results[0][:, -1].cpu().numpy(), results[0][:, :-1].cpu().numpy()
         cv2.imshow('s', out)
+        try:
+            labels, cords = results[0][:, -1].numpy(), results[0][:, :-1].numpy()
+        except:
+            labels, cords = results[0][:, -1].cpu().numpy(), results[0][:, :-1].cpu().numpy()
         
-        newdata = []
-        if len(results) >=2:
-                for x in results:
-                    item, confidence_rate, imagedata = x
-                    x1, y1, w_size, h_size = imagedata
-                    x_start = round(x1 - (w_size/2))
-                    y_start = round(y1 - (h_size/2))
-                    x_end = round(x_start + w_size)
-                    y_end = round(y_start + h_size)
-                    data = (item, confidence_rate, (x_start, y_start, x_end, y_end), w_size, h_size)
-                    newdata.append(data)
-
-        elif len(results) == 1:
-                item, confidence_rate, imagedata = results[0]
-                x1, y1, w_size, h_size = imagedata
-                x_start = round(x1 - (w_size/2))
-                y_start = round(y1 - (h_size/2))
-                x_end = round(x_start + w_size)
-                y_end = round(y_start + h_size)
-                data = (item, confidence_rate, (x_start, y_start, x_end, y_end), w_size, h_size)
-                newdata.append(data)
-
-        else:
-                newdata = False
         n = 0
-        centers = [(newdata[0][1] - newdata[0][0]) / 2, (newdata[0][2] - newdata[0][3]) / 2]
         # Pixel difference between crosshair(center) and the closest object
-        x = centers[0] - img_w/2
-        y = centers[1] - img_h/2 - (newdata[0][1] - newdata[0][0]) * 0.45
+        x = ((img_h/img_w)*1000) - (cords[0] - img_w)
+        y = ((img_h/img_w)*1000) - img_h/2 - (cords[1] * (img_h)) * 0.45
 
         # Move mouse and shoot
         scale = 1.7 * size_scale
