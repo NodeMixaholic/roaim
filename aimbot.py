@@ -30,26 +30,29 @@ with mss.mss() as sct:
         results = results.xyxyn
         out = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
         cv2.imshow('s', out)
-        labels, cords = results[0][:, -1].cpu().numpy(), results[0][:, :-1].cpu().numpy()
         
-        n = 0
+
         # Pixel difference between crosshair(center) and the closest object
+        labels, cords = results[0][:, -1].cpu().numpy(), results[0][:, :-1].cpu().numpy()
         try:
             coords = coords.split(", ").split(",")
         except:
             print("coords is not a string")
-        x = ((img_h/img_w)*1000) - (cords[0] - img_w)
-        y = ((img_h/img_w)*1000) - img_h/2 - (cords[1] * (img_h)) * 0.45
+        try:
+            x = ((img_h/img_w)*1000) - (cords[0] - img_w)
+            y = ((img_h/img_w)*1000) - img_h/2 - (cords[1] * (img_h)) * 0.45
 
-        # Move mouse and shoot
-        scale = 1.7 * size_scale
-        x = int(x * scale)
-        y = int(y * scale)
-        win32api.mouse_event(win32con.MOUSEEVENTF_MOVE, x, y, 0, 0)
-        time.sleep(0.05)
-        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, x, y, 0, 0)
-        time.sleep(0.1)
-        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, x, y, 0, 0)
+            # Move mouse and shoot
+            scale = 1.7 * size_scale
+            x = int(x * scale)
+            y = int(y * scale)
+            win32api.mouse_event(win32con.MOUSEEVENTF_MOVE, x, y, 0, 0)
+            time.sleep(0.05)
+            win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, x, y, 0, 0)
+            time.sleep(0.1)
+            win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, x, y, 0, 0)
+        except:
+            print('not ready')
         print('fps: {}'.format(1 / (time.time() - t)))
 
         if cv2.waitKey(1) == 27:
