@@ -7,6 +7,7 @@ import torch
 import time
 from hubconf import custom
 import pyautogui
+import time
 import win32api, win32con, win32gui
 model = custom(path_or_model='best.pt')
 size_scale = 3
@@ -59,5 +60,6 @@ with mss.mss() as sct:
 
         if cv2.waitKey(1) == 27:
             break
+        time.sleep(0.01)
 
 cv2.destroyAllWindows()
