@@ -32,7 +32,6 @@ with mss.mss() as sct:
         except:
             labels, cord_thres = results.xyxyn[0][:, -1].cpu().numpy(), results.xyxyn[0][:, :-1].cpu().numpy()
         cv2.imshow('s', out)
-        centers = [img_w / 2, img_h / 2]
         
         #detect boxes
         detected_boxes = []
@@ -41,10 +40,11 @@ with mss.mss() as sct:
             row = cord[i]
             xmin, ymin, xmax, ymax = int(row[0]*x_shape), int(row[1]*y_shape), int(row[2]*x_shape), int(row[3]*y_shape)
             left, right, top, bottom = int(xmin * img_w), int(xmax * img_w), int(ymin * img_h), int(ymax * img_h)
-            detected_boxes.append((left, right, top, bottom))
+            detected_boxes.append([left, right, top, bottom])
+        centers = [(detected_boxes[0][1] - detected_boxes[0][0]) / 2, (detected_boxes[0][2] - detected_boxes[0][3]) / 2]
         # Pixel difference between crosshair(center) and the closest object
         x = centers[0] - img_w/2
-        y = centers[1] - img_h/2 - (detected_boxes[2] - detected_boxes[1]) * 0.45
+        y = centers[1] - img_h/2 - (detected_boxes[0][1] - detected_boxes[0][0]) * 0.45
 
         # Move mouse and shoot
         scale = 1.7 * size_scale
