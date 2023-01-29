@@ -37,6 +37,10 @@ with mss.mss() as sct:
         
         n = 0
         # Pixel difference between crosshair(center) and the closest object
+        try:
+            coords = coords.split(", ").split(",")
+        except:
+            print("coords is not a string")
         x = ((img_h/img_w)*1000) - (cords[0] - img_w)
         y = ((img_h/img_w)*1000) - img_h/2 - (cords[1] * (img_h)) * 0.45
 
