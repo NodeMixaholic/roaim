@@ -11,8 +11,6 @@ model = custom(path_or_model='yolov7-e6e.pt')
 
 
 with mss.mss() as sct:
-    monitor = {'top': 50, 'left': 50, 'width': 1920, 'height': 1080}
-
     while True:
         t = time.time()
         # Get rect of Window
