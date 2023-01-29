@@ -9,7 +9,7 @@ from hubconf import custom
 import pyautogui
 import win32api, win32con, win32gui
 model = custom(path_or_model='yolov7-e6e.pt')
-
+size_scale = 3
 
 with mss.mss() as sct:
     while True:
