@@ -36,7 +36,7 @@ with mss.mss() as sct:
         #detect boxes
         detected_boxes = []
         n = 0
-        for i in range(n):
+        for i, box in enumerate(cord_thres):
             row = cord[i]
             xmin, ymin, xmax, ymax = int(row[0]*x_shape), int(row[1]*y_shape), int(row[2]*x_shape), int(row[3]*y_shape)
             left, right, top, bottom = int(xmin * img_w), int(xmax * img_w), int(ymin * img_h), int(ymax * img_h)
