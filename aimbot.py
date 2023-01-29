@@ -23,7 +23,7 @@ with mss.mss() as sct:
         ori_img = np.array(pyautogui.screenshot(region=region))
         ori_img = cv2.resize(ori_img, (ori_img.shape[1] // size_scale, ori_img.shape[0] // size_scale))
         image = np.expand_dims(ori_img, 0)
-        img_w, img_h = image.shape[2], image.shape[1]
+        img_w, img_h,w2,h2 = image.shape[2], image.shape[1], imaage.shape[4], image.shape[3]
         img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)             
         results = model(img)
         results.render()
@@ -34,18 +34,35 @@ with mss.mss() as sct:
             labels, cord_thres = results.xyxyn[0][:, -1].cpu().numpy(), results.xyxyn[0][:, :-1].cpu().numpy()
         cv2.imshow('s', out)
         
-        #detect boxes
-        detected_boxes = []
+        newdata = []
+        if len(results) >=2:
+                for x in test:
+                    item, confidence_rate, imagedata = x
+                    x1, y1, w_size, h_size = imagedata
+                    x_start = round(x1 - (w_size/2))
+                    y_start = round(y1 - (h_size/2))
+                    x_end = round(x_start + w_size)
+                    y_end = round(y_start + h_size)
+                    data = (item, confidence_rate, (x_start, y_start, x_end, y_end), w_size, h_size)
+                    newdata.append(data)
+
+        elif len(results) == 1:
+                item, confidence_rate, imagedata = test[0]
+                x1, y1, w_size, h_size = imagedata
+                x_start = round(x1 - (w_size/2))
+                y_start = round(y1 - (h_size/2))
+                x_end = round(x_start + w_size)
+                y_end = round(y_start + h_size)
+                data = (item, confidence_rate, (x_start, y_start, x_end, y_end), w_size, h_size)
+                newdata.append(data)
+
+        else:
+                newdata = False
         n = 0
-        for i, box in enumerate(cord_thres):
-            row = cord[i]
-            xmin, ymin, xmax, ymax = int(row[0]*x_shape), int(row[1]*y_shape), int(row[2]*x_shape), int(row[3]*y_shape)
-            left, right, top, bottom = int(xmin * img_w), int(xmax * img_w), int(ymin * img_h), int(ymax * img_h)
-            detected_boxes.append([left, right, top, bottom])
-        centers = [(detected_boxes[0][1] - detected_boxes[0][0]) / 2, (detected_boxes[0][2] - detected_boxes[0][3]) / 2]
+        centers = [(newdata[0][1] - newdata[0][0]) / 2, (newdata[0][2] - newdata[0][3]) / 2]
         # Pixel difference between crosshair(center) and the closest object
         x = centers[0] - img_w/2
-        y = centers[1] - img_h/2 - (detected_boxes[0][1] - detected_boxes[0][0]) * 0.45
+        y = centers[1] - img_h/2 - (newdata[0][1] - newdata[0][0]) * 0.45
 
         # Move mouse and shoot
         scale = 1.7 * size_scale
