@@ -30,10 +30,7 @@ with mss.mss() as sct:
         results = results.xyxyn
         out = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
         cv2.imshow('s', out)
-        try:
-            labels, cords = results[0][:, -1].numpy(), results[0][:, :-1].numpy()
-        except:
-            labels, cords = results[0][:, -1].cpu().numpy(), results[0][:, :-1].cpu().numpy()
+        labels, cords = results[0][:, -1].cpu().numpy(), results[0][:, :-1].cpu().numpy()
         
         n = 0
         # Pixel difference between crosshair(center) and the closest object
