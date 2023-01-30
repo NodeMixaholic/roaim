@@ -23,7 +23,7 @@ with mss() as sct:
         region = rect[0], rect[1], rect[2] - rect[0], rect[3] - rect[1]
         wx,wy,ww,wh = region[0], region[1], region[2], region[3]
         # Capture a window screenshot
-        window_screenshot = cv2.cvtColor(np.array(ImageGrab.grab(bbox=(wx, wy, ww, wh))), cv2.COLOR_BGR2RGB)
+        window_screenshot = cv2.cvtColor(np.array(ImageGrab.grab(bbox=(wy, wx, ww, wh))), cv2.COLOR_BGR2RGB)
 
         # Detect objects in the screenshot
         predictions = detect(net, window_screenshot)
