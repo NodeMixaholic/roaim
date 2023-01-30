@@ -18,17 +18,12 @@ def detect(net, window_screenshot):
     with torch.no_grad():
         output = net(window_screenshot)
     
-    # Extract the bounding boxes, confidences, and class_ids from the output
-    boxes, confidences, class_ids = [], [], []
-    for detection in output:
-        scores, class_idx = torch.max(detection[:, 5:], dim=1)
-        confidence = scores.flatten()
-        boxes = detection[:, :4]
-        
-        # Filter detections with low confidence
-        valid_detections = confidence > 0.5
-        boxes = boxes[valid_detections]
-        confidences = confidence[valid_detections]
-        class_ids = class_idx[valid_detections]
+    # Extract the bounding boxes and confidence scores from the output
+    boxes = output[0][:, :4].detach().numpy()
+    confidences = output[0][:, 4].detach().numpy()
+    # Filter detections with low confidence
+    mask = confidences > 0.5
+    boxes = boxes[mask]
+    confidences = confidences[mask]
     
-    return boxes, confidences, class_ids
+    return boxes, confidences
