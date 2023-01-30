@@ -6,6 +6,7 @@ import torch
 import time
 from hubconf import custom
 from detector import detect
+from PIL import ImageGrab
 import pyautogui
 import time
 from mss import mss
