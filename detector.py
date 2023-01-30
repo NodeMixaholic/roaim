@@ -19,8 +19,8 @@ def detect(net, window_screenshot):
         output = net(window_screenshot)
     
     # Extract the bounding boxes and confidence scores from the output
-    boxes = output[0][:, :4].detach().numpy()
-    confidences = output[0][:, 4].detach().numpy()
+    boxes = output[0][:, :4].detach().cpu().numpy()
+    confidences = output[0][:, 4].detach().cpu().numpy()
     # Filter detections with low confidence
     mask = confidences > 0.5
     boxes = boxes[mask]
