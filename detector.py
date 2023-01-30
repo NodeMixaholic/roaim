@@ -1,3 +1,7 @@
+import torch
+import torchvision.transforms as transforms
+from PIL import Image
+
 def detect(net, image):
     # Convert numpy array to PyTorch tensor
     image = torch.from_numpy(image)
