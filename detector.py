@@ -2,19 +2,21 @@ import torch
 import torchvision.transforms as transforms
 from PIL import Image
 
-def detect(net, image):
-    # Resize and normalize the image
+def detect(net, window_screenshot):
+    # Convert the screenshot to PIL Image and resize it
+    window_screenshot = Image.fromarray(window_screenshot)
+    window_screenshot = window_screenshot.resize((416, 416))
+    
+    # Transform the image for input to the network
     transform = transforms.Compose([
-        transforms.Resize((416, 416)),
         transforms.ToTensor(),
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
-    image = Image.fromarray(image.numpy().astype('uint8')).convert('RGB')
-    image = transform(image)
-    
+    window_screenshot = transform(window_screenshot).unsqueeze(0)
+
     # Pass the image through the network
     with torch.no_grad():
-        output = net(image)
+        output = net(window_screenshot)
     
     # Extract the bounding boxes, confidences, and class_ids from the output
     boxes, confidences, class_ids = [], [], []
