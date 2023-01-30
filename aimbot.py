@@ -5,6 +5,7 @@ import cv2
 import torch
 import time
 from hubconf import custom
+from detector import detect
 import pyautogui
 import time
 import win32api, win32con, win32gui
