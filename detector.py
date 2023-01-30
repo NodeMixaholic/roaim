@@ -5,7 +5,6 @@ from mss import mss
 def detect(net, window_screenshot):
     # Create a 4D blob from the window_screenshot
     blob = cv2.dnn.blobFromImage(window_screenshot, 1/255.0, (416, 416), swapRB=True, crop=False)
-    net.setInput(blob)
 
     # Run forward pass to get the detections
     layer_outputs = net.forward(net.getLayerNames())
