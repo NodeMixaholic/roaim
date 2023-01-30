@@ -6,6 +6,7 @@ import torchvision.transforms as T
 
 
 def detect(model, image):
+    image = np.array(Image.fromarray(image))
     transform = T.Compose([
         T.Resize(640),
         T.ToTensor(),
