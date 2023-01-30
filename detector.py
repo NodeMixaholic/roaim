@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from mss import mss
 
 def detect(net, window_screenshot):
     # Create a 4D blob from the window_screenshot
