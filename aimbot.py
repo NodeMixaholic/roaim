@@ -26,7 +26,7 @@ with mss() as sct:
         # Capture a window screenshot
         window_screenshot = cv2.cvtColor(np.array(sct.grab({"top": wy, "left": wx, "width": ww, "height": wh})), cv2.COLOR_BGR2RGB)
         # Detect objects in the screenshot
-        predictions = detect(window_screenshot)
+        predictions = detect(net,window_screenshot)
 
         # Extract positions and classes of detected objects
         objects = []
