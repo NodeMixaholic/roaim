@@ -3,6 +3,8 @@ import numpy as np
 from mss import mss
 
 def detect(net, image):
+    if not isinstance(net, cv2.dnn.DNN):
+        raise TypeError("The 'net' argument is not a DNN model object")
     blob = cv2.dnn.blobFromImage(image, 1 / 255.0, (416, 416), swapRB=True, crop=False)
     net.setInput(blob)
     layer_outputs = net.forward(net.getUnconnectedOutLayersNames())
