@@ -33,5 +33,5 @@ def detect(net, window_screenshot):
             return boxes, confidences
         except:
             print("n/a")
-            return 1,0
+            return [1,2,3,4][0,0,0,0]
             
