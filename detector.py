@@ -23,12 +23,15 @@ def detect(net, window_screenshot):
     for detection in output:
         scores, class_idx = torch.max(detection[:, 5:], dim=1)
         confidence = scores.flatten()
-        boxes = detection[:, :4]
-        
-        # Filter detections with low confidence
-        valid_detections = confidence > 0.5
-        boxes = boxes[valid_detections]
-        confidences = confidence[valid_detections]
-        class_ids = class_idx[valid_detections]
-    
-    return boxes, confidences
+        try:
+            boxes = detection[:, :4]
+            # Filter detections with low confidence
+            valid_detections = confidence > 0.5
+            boxes = boxes[valid_detections]
+            confidences = confidence[valid_detections]
+            class_ids = class_idx[valid_detections]
+            return boxes, confidences
+        except:
+            print("n/a")
+            return 1,0
+            
