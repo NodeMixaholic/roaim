@@ -1,12 +1,11 @@
 import cv2
 import numpy as np
 from mss import mss
+import cv2.dnn as dnn
 
 def detect(net, image):
-    if not isinstance(net, cv2.dnn.DNN):
-        raise TypeError("The 'net' argument is not a DNN model object")
     blob = cv2.dnn.blobFromImage(image, 1 / 255.0, (416, 416), swapRB=True, crop=False)
-    net.setInput(blob)
+    net.setInput(blob, scale=1.0/255)
     layer_outputs = net.forward(net.getUnconnectedOutLayersNames())
     
     boxes, confidences, class_ids = [], [], []
