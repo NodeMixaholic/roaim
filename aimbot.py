@@ -8,6 +8,7 @@ from hubconf import custom
 from detector import detect
 import pyautogui
 import time
+from mss import mss
 import win32api, win32con, win32gui
 net = custom(path_or_model="!best.pt")
 size_scale = 3
