@@ -1,5 +1,4 @@
 #credit to nodemixahoic and NoName.
-#also to monokim for code inspiration.
 import mss
 import numpy as np
 import cv2
