@@ -22,9 +22,8 @@ with mss.mss() as sct:
         wx,wy,ww,wh = region[0], region[1], region[2], region[3]
         # Capture a window screenshot
         window_screenshot = np.array(pyautogui.screenshot(region=region))
-        window_screenshot_pred = torch.from_numpy(window_screenshot).permute(2, 0, 1)
         # Detect objects in the screenshot
-        predictions = detect(net, window_screenshot_pred)
+        predictions = detect(net, window_screenshot)
 
         # Extract positions and classes of detected objects
         objects = []
