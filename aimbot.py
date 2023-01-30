@@ -25,29 +25,32 @@ with mss.mss() as sct:
         # Detect objects in the screenshot
         predictions = detect(net, window_screenshot)
 
-        # Extract positions and classes of detected objects
-        objects = []
-        for pred in predictions:
-            x, y, w, h = pred[2]
-            objects.append((x + w / 2, y + h / 2, pred[0]))
+        try:
+            # Extract positions and classes of detected objects
+            objects = []
+            for pred in predictions:
+                x, y, w, h = pred[2]
+                objects.append((x + w / 2, y + h / 2, pred[0]))
 
-        # Find the closest object
-        mouse_position = pywin32.GetCursorPos()
-        closest_object = None
-        min_distance = float("inf")
-        for obj in objects:
-            distance = np.sqrt((mouse_position[0] - obj[0]) ** 2 + (mouse_position[1] - obj[1]) ** 2)
-            if distance < min_distance:
-                closest_object = obj
-                min_distance = distance
+            # Find the closest object
+            mouse_position = pywin32.GetCursorPos()
+            closest_object = None
+            min_distance = float("inf")
+            for obj in objects:
+                distance = np.sqrt((mouse_position[0] - obj[0]) ** 2 + (mouse_position[1] - obj[1]) ** 2)
+                if distance < min_distance:
+                    closest_object = obj
+                    min_distance = distance
 
-        # Calculate the change in the mouse position
-        dx = int(closest_object[0] - ww / 2)
-        dy = int(closest_object[1] - wh / 2)
+            # Calculate the change in the mouse position
+            dx = int(closest_object[0] - ww / 2)
+            dy = int(closest_object[1] - wh / 2)
 
-        # Move the window and mouse cursor by the calculated amount
-        pyautogui.moveRel(dx, dy)
-        pywin32.SetCursorPos((mouse_x + dx, mouse_y + dy))
+            # Move the window and mouse cursor by the calculated amount
+            pyautogui.moveRel(dx, dy)
+            pywin32.SetCursorPos((mouse_x + dx, mouse_y + dy))
+        except:
+            print("not ready")
 
         if cv2.waitKey(1) == 27:
             break
