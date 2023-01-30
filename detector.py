@@ -1,5 +1,6 @@
 import torch
 import torchvision.transforms as transforms
+from PIL import Image
 
 def detect(net, image):
     # Resize and normalize the image
@@ -8,6 +9,7 @@ def detect(net, image):
         transforms.ToTensor(),
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
+    image = Image.fromarray(image.astype('uint8')).convert('RGB')
     image = transform(image)
     
     # Pass the image through the network
