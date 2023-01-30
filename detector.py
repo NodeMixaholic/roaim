@@ -1,27 +1,30 @@
-import cv2
-import numpy as np
+import torch
+import torchvision.transforms as transforms
 
 def detect(net, image):
-    blob = cv2.dnn.blobFromImage(image, 1 / 255.0, (416, 416), swapRB=True, crop=False)
-    net.setInput(blob)
-    layer_outputs = net.forward(net.getUnconnectedOutLayersNames())
+    # Resize and normalize the image
+    transform = transforms.Compose([
+        transforms.Resize((416, 416)),
+        transforms.ToTensor(),
+        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+    ])
+    image = transform(image).unsqueeze(0)
     
+    # Pass the image through the network
+    with torch.no_grad():
+        output = net(image)
+    
+    # Extract the bounding boxes, confidences, and class_ids from the output
     boxes, confidences, class_ids = [], [], []
-    for output in layer_outputs:
-        for detection in output:
-            scores = detection[5:]
-            class_id = np.argmax(scores)
-            confidence = scores[class_id]
-            
-            if confidence > 0.5:
-                box = detection[0:4] * np.array([image.shape[1], image.shape[0], image.shape[1], image.shape[0]])
-                (center_x, center_y, width, height) = box.astype("int")
-                
-                x = int(center_x - (width / 2))
-                y = int(center_y - (height / 2))
-                
-                boxes.append([x, y, int(width), int(height)])
-                confidences.append(float(confidence))
-                class_ids.append(class_id)
-                
+    for detection in output:
+        scores, class_idx = torch.max(detection[:, 5:], dim=1)
+        confidence = scores.flatten()
+        boxes = detection[:, :4]
+        
+        # Filter detections with low confidence
+        valid_detections = confidence > 0.5
+        boxes = boxes[valid_detections]
+        confidences = confidence[valid_detections]
+        class_ids = class_idx[valid_detections]
+    
     return boxes, confidences, class_ids
