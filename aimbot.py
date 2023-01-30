@@ -12,8 +12,8 @@ import time
 from mss import mss
 import win32api, win32con, win32gui
 
-def custom(path_or_model="!best.pt"):
-    net = cv2.dnn.readNet(path_or_model, "darknet")
+def custom(path_or_model="yolov7.pt"):
+    net = cv2.dnn.readNetFromTorch("!best.pt")
     return net
 
 net = custom(path_or_model="!best.pt")
