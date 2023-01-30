@@ -13,7 +13,7 @@ import win32api, win32con, win32gui
 net = custom(path_or_model="!best.pt")
 size_scale = 3
 
-with mss.mss() as sct:
+with mss() as sct:
     while True:
         t = time.time()
         # Get rect of Window
